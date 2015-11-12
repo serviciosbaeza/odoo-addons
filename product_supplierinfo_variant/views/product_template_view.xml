@@ -7,9 +7,12 @@
             <field name="model">product.template</field>
             <field name="inherit_id" ref="product.product_template_form_view"/>
             <field name="arch" type="xml">
-                <separator string="Suppliers" position="attributes">
+<!--                <separator name="suppliers" string="Vendors" position="attributes">
                     <attribute name="invisible">1</attribute>
-                </separator>
+                </separator>-->
+                <xpath expr="//page/separator" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
                 <field name="seller_ids" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </field>
@@ -21,9 +24,12 @@
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_normal_form_view"/>
             <field name="arch" type="xml">
-                <separator string="Suppliers" position="attributes">
+                <xpath expr="//page/separator" position="attributes">
                     <attribute name="invisible">0</attribute>
-                </separator>
+                </xpath>
+<!--                <separator name="suppliers" string="Vendors" position="attributes">
+                    <attribute name="invisible">0</attribute>
+                </separator>-->
                 <field name="seller_ids" position="attributes">
                     <attribute name="invisible">0</attribute>
                 </field>
