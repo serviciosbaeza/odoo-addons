@@ -2,19 +2,32 @@
 <openerp>
     <data>
 
-        <record id="product_template_form_view_wo_sellers" model="ir.ui.view">
+        <!--        <record id="product_template_form_view_wo_sellers" model="ir.ui.view">
             <field name="name">product.template.common.form.wo_sellers</field>
             <field name="model">product.template</field>
             <field name="inherit_id" ref="product.product_template_form_view"/>
             <field name="arch" type="xml">
-<!--                <separator name="suppliers" string="Vendors" position="attributes">
+                                <separator name="suppliers" string="Vendors" position="attributes">
                     <attribute name="invisible">1</attribute>
-                </separator>-->
-                <xpath expr="//page/separator" position="attributes">
+                </separator>
+                                <xpath expr="//page/separator" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
                 <field name="seller_ids" position="attributes">
                     <attribute name="invisible">1</attribute>
+                </field>
+            </field>
+        </record>-->
+
+
+
+        <record id="product_template_only_form_view_sellers" model="ir.ui.view">
+            <field name="name">product.template.form.sellers</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <field name="seller_ids" position="attributes">
+                    <attribute name="context">{'visible_product_tmpl_id':True, 'visible_product_id': False}</attribute>                                  
                 </field>
             </field>
         </record>
@@ -24,17 +37,50 @@
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_normal_form_view"/>
             <field name="arch" type="xml">
-                <xpath expr="//page/separator" position="attributes">
+                <field name="name" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="product_tmpl_id" position="attributes">
                     <attribute name="invisible">0</attribute>
-                </xpath>
-<!--                <separator name="suppliers" string="Vendors" position="attributes">
-                    <attribute name="invisible">0</attribute>
-                </separator>-->
+                </field>
                 <field name="seller_ids" position="attributes">
-                    <attribute name="invisible">0</attribute>
+                    <attribute name="context">{'default_product_tmpl_id':product_tmpl_id, 'default_product_id':active_id}</attribute>
+                    <attribute name="context">{'visible_product_tmpl_id':True, 'visible_product_id': True}</attribute>               
                 </field>
             </field>
         </record>
-
+        
+        <record id="product_supplierinfo_tree_view" model="ir.ui.view">
+            <field name="name">product.supplierinfo.tree.view</field>
+            <field name="model">product.supplierinfo</field>
+            <field name="inherit_id" ref="product.product_supplierinfo_tree_view"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="product_code" />
+                </field>
+                <field name="product_tmpl_id" position="after">
+                    <field name="product_id" string="Product Variant" invisible="context.get('visible_product_id', True)"/>
+                </field>
+            </field>
+        </record>
+        
+        <record id="product_supplierinfo_type_action_variant" model="ir.actions.act_window">
+            <field name="inherit_id" ref="product.product_supplierinfo_type_action"></field>
+            <field name="name">Supplier Pricelist</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.supplierinfo</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'visible_product_tmpl_id':False, 'visible_product_id':False}</field>        
+        </record>
+<!--        
+        <record id="product_supplierinfo_type_action" model="ir.actions.act_window">
+            <field name="name">Supplier Pricelist</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.supplierinfo</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'visible_product_tmpl_id':False, 'visible_product_id':False}</field>
+        </record>-->
     </data>
 </openerp>

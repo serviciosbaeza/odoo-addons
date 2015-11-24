@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="product_supplierinfo_form_view_wo_sellers" model="ir.ui.view">
+            <field name="name">product.supplierinfo.form.view.wosellers</field>
+            <field name="model">product.supplierinfo</field>
+            <field name="inherit_id" ref="product.product_supplierinfo_form_view"/>
+            <field name="arch" type="xml">
+                <field name="product_tmpl_id" position="attributes">
+                    <attribute name="invisible">context.get('visible_product_tmpl_id', True)</attribute>
+                </field>
+             
+                <field name="product_id" position="attributes">
+                    <attribute name="invisible">context.get('visible_product_id', True)</attribute>
+                </field>
+             
+            </field>
+        </record>
+
+
+
+    </data>
+</openerp>
