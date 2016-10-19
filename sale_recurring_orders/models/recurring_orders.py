@@ -3,7 +3,7 @@
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 
 from openerp import models, fields, api, exceptions, _
-from datetime import date, timedelta
+from datetime import timedelta
 from dateutil.relativedelta import relativedelta
 import openerp.addons.decimal_precision as dp
 
@@ -377,7 +377,8 @@ class Agreement(models.Model):
 
     @api.model
     def confirm_current_orders_planned(self):
-        tomorrow = fields.Date.to_string(date.today() + timedelta(days=1))
+        tomorrow = fields.Date.to_string(
+            fields.Date.from_string(fields.Date.today()) + timedelta(days=1))
         orders = self.env['sale.order'].search([
             ('aggrement_id', '!=', False),
             ('state', 'in', ('draft', 'sent')),
