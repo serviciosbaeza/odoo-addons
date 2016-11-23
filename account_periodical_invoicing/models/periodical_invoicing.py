@@ -41,6 +41,8 @@ class Agreement(models.Model):
         @rtype: date
         @return: The date incremented in 'interval' units of 'unit'.
         """
+        if not date or not unit or not interval:
+            return False
         if unit == 'days':
             return date + timedelta(days=interval)
         elif unit == 'weeks':
@@ -59,6 +61,8 @@ class Agreement(models.Model):
         @rtype: date
         @return: The date decremented in 'interval' units of 'unit'.
         """
+        if not date or not unit or not interval:
+            return False
         if unit == 'days':
             return date - timedelta(days=interval)
         elif unit == 'weeks':
@@ -83,6 +87,8 @@ class Agreement(models.Model):
                 date = self._get_next_term_date(
                     fields.Date.from_string(agreement.start_date),
                     agreement.prolong_unit, agreement.prolong_interval)
+                if not date:
+                    continue
                 while date < today:
                     date = self._get_next_term_date(
                         date, agreement.prolong_unit,
@@ -340,7 +346,7 @@ class Agreement(models.Model):
             company_id=agreement.company_id.id,
             force_company=agreement.company_id.id)
         onchange_vals = obj.onchange_partner_id(
-            type=invoice_vals['type'], partner_id=agreement.partner_id.id,
+            invoice_vals['type'], agreement.partner_id.id,
             company_id=agreement.company_id.id)
         invoice_vals.update(onchange_vals['value'])
         return invoice_vals
