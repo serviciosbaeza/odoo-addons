@@ -80,6 +80,8 @@ class Agreement(models.Model):
         get max date
         """
         for agreement in self:
+            if not agreement.start_date:
+                agreement.start_date = fields.Date.today()
             if agreement.prolong == 'fixed':
                 agreement.next_expiration_date = agreement.end_date
             elif agreement.prolong == 'unlimited':
@@ -97,8 +99,8 @@ class Agreement(models.Model):
             else:
                 # for renewable fixed term
                 agreement.next_expiration_date = self._get_next_term_date(
-                    fields.Date.to_string(agreement.last_renovation_date or
-                                          agreement.start_date),
+                    fields.Date.from_string(agreement.last_renovation_date or
+                                            agreement.start_date),
                     agreement.prolong_unit, agreement.prolong_interval)
 
     def _get_default_currency_id(self):
